@@ -1,5 +1,6 @@
 ---
 import { business } from '../data/business';
+import { withBase } from '../lib/site';
 
 interface Props {
   heading?: string;
@@ -26,7 +27,7 @@ const {
         Call {business.phone}
       </a>
       <a
-        href="/contact/"
+        href={withBase("/contact/")}
         class="flex items-center justify-center rounded-sm bg-accent px-7 py-3.5 text-base font-semibold text-bg transition-colors hover:bg-accent-light"
       >
         Get a Quote

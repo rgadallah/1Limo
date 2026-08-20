@@ -1,6 +1,7 @@
 ---
 import { business, serviceAreas } from '../data/business';
 import { services } from '../data/services';
+import { withBase } from '../lib/site';
 
 const year = new Date().getFullYear();
 ---
@@ -8,7 +9,7 @@ const year = new Date().getFullYear();
 <footer class="border-t border-border bg-surface">
   <div class="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:px-8 lg:grid-cols-4">
     <div>
-      <a href="/" class="font-display text-xl font-semibold text-text">
+      <a href={withBase("/")} class="font-display text-xl font-semibold text-text">
         1<span class="text-accent">Limo</span>
       </a>
       <p class="mt-4 max-w-xs text-sm leading-relaxed text-muted">
@@ -25,7 +26,7 @@ const year = new Date().getFullYear();
         {
           services.map((service) => (
             <li>
-              <a href={`/services/${service.slug}/`} class="transition-colors hover:text-accent">
+              <a href={withBase(`/services/${service.slug}/`)} class="transition-colors hover:text-accent">
                 {service.name}
               </a>
             </li>
@@ -42,7 +43,7 @@ const year = new Date().getFullYear();
         {
           serviceAreas.map((area) => (
             <li>
-              <a href={`/service-areas/${area.slug}/`} class="transition-colors hover:text-accent">
+              <a href={withBase(`/service-areas/${area.slug}/`)} class="transition-colors hover:text-accent">
                 {area.name}
               </a>
             </li>
@@ -53,9 +54,9 @@ const year = new Date().getFullYear();
         Company
       </h2>
       <ul class="mt-4 space-y-2.5 text-sm text-muted">
-        <li><a href="/about/" class="transition-colors hover:text-accent">About</a></li>
-        <li><a href="/fleet/" class="transition-colors hover:text-accent">Fleet</a></li>
-        <li><a href="/contact/" class="transition-colors hover:text-accent">Contact / Get a Quote</a></li>
+        <li><a href={withBase("/about/")} class="transition-colors hover:text-accent">About</a></li>
+        <li><a href={withBase("/fleet/")} class="transition-colors hover:text-accent">Fleet</a></li>
+        <li><a href={withBase("/contact/")} class="transition-colors hover:text-accent">Contact / Get a Quote</a></li>
       </ul>
     </div>
 
@@ -74,7 +75,7 @@ const year = new Date().getFullYear();
         </li>
       </ul>
       <a
-        href="/contact/"
+        href={withBase("/contact/")}
         class="mt-6 inline-block rounded-sm border border-accent px-5 py-2.5 text-sm font-semibold text-accent transition-colors hover:bg-accent hover:text-bg"
       >
         Request a Quote

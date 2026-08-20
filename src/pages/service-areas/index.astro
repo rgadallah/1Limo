@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import CTABand from '../../components/CTABand.astro';
 import { serviceAreas } from '../../data/business';
 import { unsplashUrl } from '../../lib/unsplash';
+import { withBase } from '../../lib/site';
 ---
 
 <Layout
@@ -30,7 +31,7 @@ import { unsplashUrl } from '../../lib/unsplash';
         {
           serviceAreas.map((area, index) => (
             <a
-              href={`/service-areas/${area.slug}/`}
+              href={withBase(`/service-areas/${area.slug}/`)}
               data-reveal
               style={`transition-delay: ${(index % 2) * 100}ms`}
               class="group block overflow-hidden rounded-sm border border-border bg-surface transition-colors hover:border-accent/60"

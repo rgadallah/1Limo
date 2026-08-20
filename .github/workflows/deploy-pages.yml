@@ -1,0 +1,41 @@
+name: Deploy GitHub Pages preview
+
+# This workflow exists only to give a temporary, clickable preview of the
+# site on GitHub Pages. It is NOT the production deployment — see
+# README.md for how to deploy the real site to whatever host is chosen
+# (Cloudflare Pages, Netlify, Vercel, S3, etc). GH_PAGES_PREVIEW=true below
+# is what tells astro.config.mjs to use the /1Limo/ sub-path only for this
+# build; every other build stays root-relative.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GH_PAGES_PREVIEW: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: withastro/action@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

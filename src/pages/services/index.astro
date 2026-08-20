@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import CTABand from '../../components/CTABand.astro';
 import { services } from '../../data/services';
 import { unsplashUrl } from '../../lib/unsplash';
+import { withBase } from '../../lib/site';
 ---
 
 <Layout
@@ -32,7 +33,7 @@ import { unsplashUrl } from '../../lib/unsplash';
         {
           services.map((service, index) => (
             <a
-              href={`/services/${service.slug}/`}
+              href={withBase(`/services/${service.slug}/`)}
               data-reveal
               style={`transition-delay: ${(index % 3) * 100}ms`}
               class="group block overflow-hidden rounded-sm border border-border bg-surface transition-colors hover:border-accent/60"

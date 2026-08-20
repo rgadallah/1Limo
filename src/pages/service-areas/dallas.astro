@@ -7,6 +7,7 @@ import { business, serviceAreas } from '../../data/business';
 import { services } from '../../data/services';
 import { serviceSchema } from '../../lib/schema';
 import { unsplashUrl } from '../../lib/unsplash';
+import { withBase } from '../../lib/site';
 
 const area = serviceAreas.find((a) => a.slug === 'dallas')!;
 const relatedServices = services.filter((s) =>
@@ -39,9 +40,9 @@ const relatedServices = services.filter((s) =>
     </div>
     <div class="relative mx-auto max-w-7xl px-6 pb-16 pt-28 md:px-8 md:pb-20 md:pt-36">
       <nav aria-label="Breadcrumb" class="text-sm text-muted">
-        <a href="/" class="hover:text-accent">Home</a>
+        <a href={withBase("/")} class="hover:text-accent">Home</a>
         <span class="mx-2">/</span>
-        <a href="/service-areas/" class="hover:text-accent">Service Areas</a>
+        <a href={withBase("/service-areas/")} class="hover:text-accent">Service Areas</a>
         <span class="mx-2">/</span>
         <span class="text-text/70">Dallas</span>
       </nav>
@@ -85,7 +86,7 @@ const relatedServices = services.filter((s) =>
         {
           relatedServices.map((service, i) => (
             <a
-              href={`/services/${service.slug}/`}
+              href={withBase(`/services/${service.slug}/`)}
               data-reveal
               style={`transition-delay: ${i * 100}ms`}
               class="group block rounded-sm border border-border bg-bg p-6 transition-colors hover:border-accent/60"

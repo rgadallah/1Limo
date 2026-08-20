@@ -23,6 +23,21 @@ on (Cloudflare Pages, Netlify, Vercel, S3 + CloudFront, or traditional shared
 hosting). Nothing in this repo is tied to a specific host: there's no
 `vercel.json`, no CF-only adapter, no serverless functions.
 
+### Live preview (GitHub Pages)
+
+`.github/workflows/deploy-pages.yml` builds and publishes this repo to GitHub
+Pages on every push to `main`, purely so there's a clickable link to review —
+it is **not** the production deployment. Because a GitHub Pages project site
+is served from a `/1Limo/` sub-path rather than a domain root, the workflow
+sets `GH_PAGES_PREVIEW=true`, which `astro.config.mjs` reads to switch `site`
+and `base` for that one build only; every other build (local dev, the real
+production build for 1limo.net) is unaffected. Internal links go through the
+`withBase()` helper in `src/lib/site.ts` for this reason — it's a no-op
+(returns the path unchanged) whenever `base` is `/`, which is always true
+outside of the GitHub Pages workflow. Delete `.github/workflows/deploy-pages.yml`
+and `src/lib/site.ts` (reverting `href`s back to plain strings) once a real
+host is chosen and this preview is no longer needed.
+
 ## Project status
 
 All 17 pages in the site structure are built: Home, Services overview + all 7
