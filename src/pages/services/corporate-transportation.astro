@@ -1,0 +1,166 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import CTABand from '../../components/CTABand.astro';
+import { business } from '../../data/business';
+import { getService } from '../../data/services';
+import { serviceSchema, faqSchema } from '../../lib/schema';
+import { unsplashUrl } from '../../lib/unsplash';
+
+const service = getService('corporate-transportation')!;
+
+const features = [
+  {
+    title: 'Consistent, on-time pickups',
+    body: 'The same standard whether it\'s a single airport run or a full week of client meetings — no scrambling to find a ride between appointments.',
+  },
+  {
+    title: 'Discretion built in',
+    body: 'Chauffeurs trained to stay professional and quiet in the vehicle, so you can take calls or prep for a meeting without an audience.',
+  },
+  {
+    title: 'Roadshow-ready logistics',
+    body: 'Multi-stop itineraries, waiting time between meetings, and coordination across several vehicles for a visiting team — handled by one dispatcher.',
+  },
+  {
+    title: 'Direct billing available',
+    body: 'Set up recurring corporate billing so your team can book without a company card for every trip.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'Can you set up recurring or direct billing for our company?',
+    answer:
+      'Yes. Call our reservation line to set up a corporate account with direct billing, so your team can book trips without submitting a card each time.',
+  },
+  {
+    question: 'Do you handle multi-stop itineraries for client roadshows?',
+    answer:
+      'Yes — tell us the full schedule and we coordinate stops, wait times, and multiple vehicles if a visiting team needs more than one car.',
+  },
+  {
+    question: 'Can we book a chauffeur for a full day, not just a single trip?',
+    answer:
+      'Yes, full-day and multi-day bookings are available — see our Hourly Chauffeur Service page for details, or call to combine it with a corporate account.',
+  },
+];
+---
+
+<Layout title={service.metaTitle} description={service.metaDescription} path="/services/corporate-transportation/">
+  <Fragment slot="schema">
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(
+        serviceSchema({ name: 'Corporate Transportation', description: service.metaDescription, path: '/services/corporate-transportation/' })
+      )}
+    />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema(faqs))} />
+  </Fragment>
+
+  <section class="relative overflow-hidden bg-bg">
+    <div class="absolute inset-0">
+      <Image
+        src={unsplashUrl('1740485863419-0ac115772a95', 1920)}
+        width={1920}
+        height={1100}
+        alt="Business professional stepping into a chauffeured vehicle"
+        class="h-full w-full object-cover opacity-40"
+        priority
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/85 to-bg/50" />
+    </div>
+    <div class="relative mx-auto max-w-7xl px-6 pb-16 pt-28 md:px-8 md:pb-20 md:pt-36">
+      <nav aria-label="Breadcrumb" class="text-sm text-muted">
+        <a href="/" class="hover:text-accent">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/services/" class="hover:text-accent">Services</a>
+        <span class="mx-2">/</span>
+        <span class="text-text/70">Corporate Transportation</span>
+      </nav>
+      <h1 class="mt-5 max-w-2xl font-display text-4xl font-semibold leading-[1.1] text-text sm:text-5xl">
+        Corporate Transportation in Dallas-Fort Worth
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-text/85">{service.heroBlurb}</p>
+      <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+        <a href={business.phoneHref} class="flex items-center justify-center gap-2 rounded-sm bg-accent px-7 py-3.5 text-base font-semibold text-bg transition-colors hover:bg-accent-light">
+          Call {business.phone}
+        </a>
+        <a href="#quote" class="flex items-center justify-center rounded-sm border border-text/30 px-7 py-3.5 text-base font-semibold text-text transition-colors hover:border-accent hover:text-accent">
+          Get a Quote
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">
+        Executive travel that keeps your schedule
+      </h2>
+      <p data-reveal style="transition-delay: 50ms" class="mt-5 leading-relaxed text-muted">
+        1Limo works with executives, sales teams, and visiting clients across the DFW Metroplex — from a single daily
+        pickup to a full week of coordinated travel around a corporate event. Vehicles are Wi-Fi ready and stocked
+        with water, so the ride functions as an extension of the workday, not a break from it.
+      </p>
+      <p data-reveal style="transition-delay: 100ms" class="mt-4 leading-relaxed text-muted">
+        We serve companies based in Dallas, Fort Worth, Plano, and Las Colinas, with airport coordination for both
+        DFW International and Dallas Love Field.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-surface py-20 md:py-28">
+    <div class="mx-auto max-w-7xl px-6 md:px-8">
+      <div data-reveal class="max-w-2xl">
+        <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-accent">What's Included</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-text md:text-4xl">Built for business travel</h2>
+      </div>
+      <div class="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          features.map((f, i) => (
+            <div data-reveal style={`transition-delay: ${i * 100}ms`} class="border-t-2 border-accent/50 pt-5">
+              <h3 class="font-display text-lg font-semibold text-text">{f.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{f.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">Corporate transportation FAQ</h2>
+      <div class="mt-10 divide-y divide-border border-t border-border">
+        {
+          faqs.map((faq, i) => (
+            <details data-reveal style={`transition-delay: ${i * 60}ms`} class="group py-5">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-medium text-text">
+                {faq.question}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 flex-shrink-0 text-accent transition-transform group-open:rotate-45" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 5a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 10 5Z" clip-rule="evenodd" />
+                </svg>
+              </summary>
+              <p class="mt-3 leading-relaxed text-muted">{faq.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand heading="Ready to set up corporate travel?" subheading="Call to set up a corporate account, or request a quote for your next trip." />
+
+  <section id="quote" class="py-20 md:py-28">
+    <div class="mx-auto max-w-2xl px-6 md:px-8">
+      <div data-reveal class="text-center">
+        <h2 class="font-display text-3xl font-semibold text-text">Request Corporate Transportation</h2>
+        <p class="mt-3 text-muted">Share your trip details — a reservation specialist will confirm within minutes.</p>
+      </div>
+      <LeadForm defaultService="Corporate Transportation" class="mt-10" />
+    </div>
+  </section>
+</Layout>

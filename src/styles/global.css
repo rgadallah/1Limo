@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+ * Design tokens. Everything visual on the site should trace back to one of
+ * these — no ad-hoc hex codes or font names in page/component markup.
+ * ------------------------------------------------------------------------- */
+@theme {
+  --font-display: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Black/gold luxury palette — placeholder until the real logo is dropped in
+     (see src/assets/logo.README.md), at which point these should be checked
+     against the extracted brand colors and adjusted if needed. */
+  --color-bg: #0a0a0c;
+  --color-surface: #151517;
+  --color-surface-2: #1e1e21;
+  --color-border: #2b2b2f;
+  --color-accent: #c8a24c;
+  --color-accent-light: #e2c274;
+  --color-accent-dark: #93741f;
+  --color-text: #f4f1ea;
+  --color-muted: #a49f96;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Scroll-reveal: element starts hidden/offset, becomes visible once
+     data-reveal-visible is added by the IntersectionObserver in
+     BaseLayout's inline script. Falls back to fully visible with no motion
+     for reduced-motion users and for JS-disabled clients (see body script). */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  [data-reveal-visible] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}

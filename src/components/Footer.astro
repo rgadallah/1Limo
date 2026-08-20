@@ -1,0 +1,91 @@
+---
+import { business, serviceAreas } from '../data/business';
+import { services } from '../data/services';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-surface">
+  <div class="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:px-8 lg:grid-cols-4">
+    <div>
+      <a href="/" class="font-display text-xl font-semibold text-text">
+        1<span class="text-accent">Limo</span>
+      </a>
+      <p class="mt-4 max-w-xs text-sm leading-relaxed text-muted">
+        {business.tagline}. Chauffeured transportation across {business.serviceAreaSummary}.
+      </p>
+      <p class="mt-4 text-sm text-muted">{business.hours.label}</p>
+    </div>
+
+    <div>
+      <h2 class="font-display text-sm font-semibold uppercase tracking-widest text-accent">
+        Services
+      </h2>
+      <ul class="mt-4 space-y-2.5 text-sm text-muted">
+        {
+          services.map((service) => (
+            <li>
+              <a href={`/services/${service.slug}/`} class="transition-colors hover:text-accent">
+                {service.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-display text-sm font-semibold uppercase tracking-widest text-accent">
+        Service Areas
+      </h2>
+      <ul class="mt-4 space-y-2.5 text-sm text-muted">
+        {
+          serviceAreas.map((area) => (
+            <li>
+              <a href={`/service-areas/${area.slug}/`} class="transition-colors hover:text-accent">
+                {area.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <h2 class="mt-8 font-display text-sm font-semibold uppercase tracking-widest text-accent">
+        Company
+      </h2>
+      <ul class="mt-4 space-y-2.5 text-sm text-muted">
+        <li><a href="/about/" class="transition-colors hover:text-accent">About</a></li>
+        <li><a href="/fleet/" class="transition-colors hover:text-accent">Fleet</a></li>
+        <li><a href="/contact/" class="transition-colors hover:text-accent">Contact / Get a Quote</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-display text-sm font-semibold uppercase tracking-widest text-accent">
+        Contact
+      </h2>
+      <ul class="mt-4 space-y-2.5 text-sm text-muted">
+        <li>
+          <a href={business.phoneHref} class="transition-colors hover:text-accent">{business.phone}</a>
+        </li>
+        <li>
+          <a href={`mailto:${business.email}`} class="transition-colors hover:text-accent">
+            {business.email}
+          </a>
+        </li>
+      </ul>
+      <a
+        href="/contact/"
+        class="mt-6 inline-block rounded-sm border border-accent px-5 py-2.5 text-sm font-semibold text-accent transition-colors hover:bg-accent hover:text-bg"
+      >
+        Request a Quote
+      </a>
+    </div>
+  </div>
+
+  <div class="border-t border-border">
+    <div class="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-6 text-xs text-muted md:flex-row md:items-center md:justify-between md:px-8">
+      <p>&copy; {year} {business.legalName}. All rights reserved.</p>
+      <p>Dallas &middot; Fort Worth &middot; Plano &middot; DFW Metroplex</p>
+    </div>
+  </div>
+</footer>

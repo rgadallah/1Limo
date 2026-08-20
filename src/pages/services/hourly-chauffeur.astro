@@ -1,0 +1,165 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import CTABand from '../../components/CTABand.astro';
+import { business } from '../../data/business';
+import { getService } from '../../data/services';
+import { serviceSchema, faqSchema } from '../../lib/schema';
+import { unsplashUrl } from '../../lib/unsplash';
+
+const service = getService('hourly-chauffeur')!;
+
+const features = [
+  {
+    title: 'Your schedule, not a fixed route',
+    body: "Multiple stops, waiting time, last-minute changes — your chauffeur adjusts as your day unfolds.",
+  },
+  {
+    title: 'Billed by the hour, not the trip',
+    body: 'One rate covers the whole booking, whether that\'s running errands or a full day of appointments.',
+  },
+  {
+    title: 'The same chauffeur throughout',
+    body: 'One person, one vehicle, for the entire booking — no re-explaining your plans to a new driver.',
+  },
+  {
+    title: 'Minimums that scale to the occasion',
+    body: 'From a few hours to a full day — call to discuss what fits your plans.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'Is there a minimum number of hours to book?',
+    answer:
+      'Yes, hourly bookings have a minimum that varies by day and vehicle type — call our reservation line and we\'ll confirm pricing and availability for your date.',
+  },
+  {
+    question: 'Can I make multiple stops during an hourly booking?',
+    answer:
+      'Yes — that\'s exactly what hourly service is built for. Your chauffeur waits between stops as part of the booking.',
+  },
+  {
+    question: 'What\'s the difference between this and a standard point-to-point ride?',
+    answer:
+      'A point-to-point ride (like an airport transfer) is a single trip from A to B. Hourly service reserves your chauffeur and vehicle for a block of time, so you can make multiple stops or run on a flexible schedule.',
+  },
+];
+---
+
+<Layout title={service.metaTitle} description={service.metaDescription} path="/services/hourly-chauffeur/">
+  <Fragment slot="schema">
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(
+        serviceSchema({ name: 'Standard / Hourly Chauffeur Service', description: service.metaDescription, path: '/services/hourly-chauffeur/' })
+      )}
+    />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema(faqs))} />
+  </Fragment>
+
+  <section class="relative overflow-hidden bg-bg">
+    <div class="absolute inset-0">
+      <Image
+        src={unsplashUrl('1607642857266-88f5f03e66c6', 1920)}
+        width={1920}
+        height={1100}
+        alt="Chauffeur in a suit driving a luxury vehicle"
+        class="h-full w-full object-cover opacity-40"
+        priority
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/85 to-bg/50" />
+    </div>
+    <div class="relative mx-auto max-w-7xl px-6 pb-16 pt-28 md:px-8 md:pb-20 md:pt-36">
+      <nav aria-label="Breadcrumb" class="text-sm text-muted">
+        <a href="/" class="hover:text-accent">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/services/" class="hover:text-accent">Services</a>
+        <span class="mx-2">/</span>
+        <span class="text-text/70">Hourly Chauffeur Service</span>
+      </nav>
+      <h1 class="mt-5 max-w-2xl font-display text-4xl font-semibold leading-[1.1] text-text sm:text-5xl">
+        Standard &amp; Hourly Chauffeur Service
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-text/85">{service.heroBlurb}</p>
+      <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+        <a href={business.phoneHref} class="flex items-center justify-center gap-2 rounded-sm bg-accent px-7 py-3.5 text-base font-semibold text-bg transition-colors hover:bg-accent-light">
+          Call {business.phone}
+        </a>
+        <a href="#quote" class="flex items-center justify-center rounded-sm border border-text/30 px-7 py-3.5 text-base font-semibold text-text transition-colors hover:border-accent hover:text-accent">
+          Get a Quote
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">
+        A private chauffeur for however your day unfolds
+      </h2>
+      <p data-reveal style="transition-delay: 50ms" class="mt-5 leading-relaxed text-muted">
+        Not every trip fits neatly into a single pickup and drop-off. Hourly service reserves your chauffeur and
+        vehicle for a block of time — a few hours or a full day — so you can make multiple stops, wait between
+        appointments, or simply keep your schedule flexible without booking a new ride each time.
+      </p>
+      <p data-reveal style="transition-delay: 100ms" class="mt-4 leading-relaxed text-muted">
+        Available across Dallas, Fort Worth, Plano, and the surrounding DFW Metroplex.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-surface py-20 md:py-28">
+    <div class="mx-auto max-w-7xl px-6 md:px-8">
+      <div data-reveal class="max-w-2xl">
+        <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-accent">What's Included</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-text md:text-4xl">Built for flexible schedules</h2>
+      </div>
+      <div class="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          features.map((f, i) => (
+            <div data-reveal style={`transition-delay: ${i * 100}ms`} class="border-t-2 border-accent/50 pt-5">
+              <h3 class="font-display text-lg font-semibold text-text">{f.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{f.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">Hourly service FAQ</h2>
+      <div class="mt-10 divide-y divide-border border-t border-border">
+        {
+          faqs.map((faq, i) => (
+            <details data-reveal style={`transition-delay: ${i * 60}ms`} class="group py-5">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-medium text-text">
+                {faq.question}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 flex-shrink-0 text-accent transition-transform group-open:rotate-45" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 5a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 10 5Z" clip-rule="evenodd" />
+                </svg>
+              </summary>
+              <p class="mt-3 leading-relaxed text-muted">{faq.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand heading="Need a chauffeur for the day?" subheading="Tell us your schedule — we'll confirm pricing and availability." />
+
+  <section id="quote" class="py-20 md:py-28">
+    <div class="mx-auto max-w-2xl px-6 md:px-8">
+      <div data-reveal class="text-center">
+        <h2 class="font-display text-3xl font-semibold text-text">Request Hourly Chauffeur Service</h2>
+        <p class="mt-3 text-muted">Share your schedule — a reservation specialist will confirm within minutes.</p>
+      </div>
+      <LeadForm defaultService="Standard / Hourly Chauffeur Service" class="mt-10" />
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,219 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import CTABand from '../../components/CTABand.astro';
+import { business } from '../../data/business';
+import { getService } from '../../data/services';
+import { serviceSchema, faqSchema } from '../../lib/schema';
+import { unsplashUrl } from '../../lib/unsplash';
+
+const service = getService('airport-transportation')!;
+
+const steps = [
+  {
+    title: 'Book your ride',
+    body: 'Reserve online or call our dispatch line with your flight number, terminal, and pickup details.',
+  },
+  {
+    title: 'We track your flight',
+    body: "We monitor your flight status in real time, so your chauffeur adjusts automatically for early or delayed arrivals — no extra call needed.",
+  },
+  {
+    title: 'Meet your chauffeur',
+    body: 'Your chauffeur is at the curb or baggage claim, dressed professionally and ready with your name displayed, right when you land.',
+  },
+  {
+    title: 'Ride in comfort',
+    body: 'Relax in a spotless, climate-controlled vehicle for a smooth, direct route to your destination.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'Do you track my flight if it’s delayed or early?',
+    answer:
+      'Yes. Every airport reservation includes real-time flight tracking, so your chauffeur automatically adjusts pickup timing for early arrivals or delays at no extra charge.',
+  },
+  {
+    question: 'Where exactly will my chauffeur meet me at DFW or Love Field?',
+    answer:
+      'For arrivals, your chauffeur meets you at baggage claim with a name sign unless you request curbside pickup. For departures, we recommend a pickup 2-3 hours before domestic flights and 3 hours before international flights.',
+  },
+  {
+    question: 'Do you serve both DFW International and Dallas Love Field?',
+    answer:
+      'Yes, we provide chauffeured transportation to and from both DFW International Airport and Dallas Love Field, as well as connections throughout the Dallas-Fort Worth Metroplex.',
+  },
+  {
+    question: 'How far in advance should I book airport transportation?',
+    answer:
+      'We recommend booking at least 24 hours in advance for guaranteed availability, though we accommodate same-day and last-minute requests whenever possible — call our 24/7 line directly for urgent bookings.',
+  },
+  {
+    question: 'What happens if my flight is cancelled or significantly delayed?',
+    answer:
+      'Simply call or text our dispatch line and we will rebook your pickup at no additional fee for reasonable schedule changes. Because we track your flight, minor delays are handled automatically.',
+  },
+];
+---
+
+<Layout
+  title={service.metaTitle}
+  description={service.metaDescription}
+  path="/services/airport-transportation/"
+>
+  <Fragment slot="schema">
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(
+        serviceSchema({
+          name: 'Airport Transportation',
+          description: service.metaDescription,
+          path: '/services/airport-transportation/',
+        })
+      )}
+    />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema(faqs))} />
+  </Fragment>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-bg">
+    <div class="absolute inset-0">
+      <Image
+        src={unsplashUrl('1561131668-f63504fc549d', 1920)}
+        width={1920}
+        height={1100}
+        alt="Modern airport terminal concourse with travelers"
+        class="h-full w-full object-cover opacity-40"
+        priority
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/85 to-bg/50"></div>
+    </div>
+
+    <div class="relative mx-auto max-w-7xl px-6 pb-16 pt-28 md:px-8 md:pb-20 md:pt-36">
+      <nav aria-label="Breadcrumb" class="text-sm text-muted">
+        <a href="/" class="hover:text-accent">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/services/" class="hover:text-accent">Services</a>
+        <span class="mx-2">/</span>
+        <span class="text-text/70">Airport Transportation</span>
+      </nav>
+
+      <h1 class="mt-5 max-w-2xl font-display text-4xl font-semibold leading-[1.1] text-text sm:text-5xl">
+        DFW &amp; Love Field Airport Transportation
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-text/85">
+        {service.heroBlurb}
+      </p>
+
+      <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+        <a
+          href={business.phoneHref}
+          class="flex items-center justify-center gap-2 rounded-sm bg-accent px-7 py-3.5 text-base font-semibold text-bg transition-colors hover:bg-accent-light"
+        >
+          Call {business.phone}
+        </a>
+        <a
+          href="#quote"
+          class="flex items-center justify-center rounded-sm border border-text/30 px-7 py-3.5 text-base font-semibold text-text transition-colors hover:border-accent hover:text-accent"
+        >
+          Get a Quote
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro copy -->
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">
+        On-time airport transfers, every landing
+      </h2>
+      <p data-reveal style="transition-delay: 50ms" class="mt-5 leading-relaxed text-muted">
+        Whether you're flying out of DFW International for a business trip or landing at Dallas Love Field after a long
+        flight, 1Limo delivers the same standard: a professional chauffeur, a spotless vehicle, and a pickup timed to
+        your actual flight — not your original schedule. No circling arrivals, no surge pricing, no guessing where
+        your ride is.
+      </p>
+      <p data-reveal style="transition-delay: 100ms" class="mt-4 leading-relaxed text-muted">
+        We serve travelers across Dallas, Fort Worth, Plano, and the greater DFW Metroplex, with dedicated airport
+        transportation for solo executives, families, and small groups alike.
+      </p>
+    </div>
+  </section>
+
+  <!-- Process steps -->
+  <section class="bg-surface py-20 md:py-28">
+    <div class="mx-auto max-w-7xl px-6 md:px-8">
+      <div data-reveal class="max-w-2xl">
+        <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-accent">How It Works</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-text md:text-4xl">
+          From booking to baggage claim
+        </h2>
+      </div>
+
+      <ol class="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          steps.map((step, index) => (
+            <li data-reveal style={`transition-delay: ${index * 100}ms`} class="border-t-2 border-accent/50 pt-5">
+              <span class="font-display text-3xl font-semibold text-accent">{`0${index + 1}`}</span>
+              <h3 class="mt-3 font-display text-lg font-semibold text-text">{step.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{step.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">
+        Airport transportation FAQ
+      </h2>
+
+      <div class="mt-10 divide-y divide-border border-t border-border">
+        {
+          faqs.map((faq, index) => (
+            <details data-reveal style={`transition-delay: ${index * 60}ms`} class="group py-5">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-medium text-text">
+                {faq.question}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  class="h-5 w-5 flex-shrink-0 text-accent transition-transform group-open:rotate-45"
+                  aria-hidden="true"
+                >
+                  <path fill-rule="evenodd" d="M10 5a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 10 5Z" clip-rule="evenodd" />
+                </svg>
+              </summary>
+              <p class="mt-3 leading-relaxed text-muted">{faq.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand
+    heading="Landing at DFW or Love Field soon?"
+    subheading="Reserve your chauffeur now, or call our 24/7 line for a same-day pickup."
+  />
+
+  <!-- Quote form -->
+  <section id="quote" class="py-20 md:py-28">
+    <div class="mx-auto max-w-2xl px-6 md:px-8">
+      <div data-reveal class="text-center">
+        <h2 class="font-display text-3xl font-semibold text-text">Request Your Airport Transfer</h2>
+        <p class="mt-3 text-muted">
+          Share your flight and trip details — a reservation specialist will confirm within minutes.
+        </p>
+      </div>
+      <LeadForm defaultService="Airport Transportation" class="mt-10" />
+    </div>
+  </section>
+</Layout>

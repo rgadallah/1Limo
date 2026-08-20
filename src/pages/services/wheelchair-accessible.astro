@@ -1,0 +1,166 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import CTABand from '../../components/CTABand.astro';
+import { business } from '../../data/business';
+import { getService } from '../../data/services';
+import { serviceSchema, faqSchema } from '../../lib/schema';
+import { unsplashUrl } from '../../lib/unsplash';
+
+const service = getService('wheelchair-accessible')!;
+
+const features = [
+  {
+    title: 'ADA-compliant vehicles',
+    body: 'Wheelchair-accessible vans equipped with ramps and secure wheelchair restraint systems.',
+  },
+  {
+    title: 'Trained chauffeurs',
+    body: 'Every chauffeur is trained in safe, respectful assistance — help is offered, never assumed or forced.',
+  },
+  {
+    title: 'Same standard, same booking process',
+    body: 'Book the same way as any other ride, with the same 24/7 availability and on-time reliability.',
+  },
+  {
+    title: 'Room for a companion',
+    body: 'Accessible vehicles seat additional passengers, so a caregiver or family member can ride along.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'What kind of wheelchair-accessible vehicles do you have?',
+    answer:
+      'Our accessible vehicles are equipped with ramps and certified wheelchair restraint systems, sized to accommodate most manual and power wheelchairs — call ahead with your specific chair dimensions if you have concerns about fit.',
+  },
+  {
+    question: 'Can a caregiver or family member ride along?',
+    answer:
+      'Yes, our accessible vehicles have additional seating for a companion or caregiver to ride together.',
+  },
+  {
+    question: 'Do I need to book accessible transportation further in advance?',
+    answer:
+      "We recommend booking at least 24 hours ahead to guarantee vehicle availability, though we'll always do what we can for shorter-notice requests — call our dispatch line directly.",
+  },
+];
+---
+
+<Layout title={service.metaTitle} description={service.metaDescription} path="/services/wheelchair-accessible/">
+  <Fragment slot="schema">
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(
+        serviceSchema({ name: 'Wheelchair-Accessible Transportation', description: service.metaDescription, path: '/services/wheelchair-accessible/' })
+      )}
+    />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema(faqs))} />
+  </Fragment>
+
+  <section class="relative overflow-hidden bg-bg">
+    <div class="absolute inset-0">
+      <Image
+        src={unsplashUrl('1732194439331-08ec61c4df4f', 1920)}
+        width={1920}
+        height={1100}
+        alt="Wheelchair-accessible van with ramp lift in use"
+        class="h-full w-full object-cover opacity-40"
+        priority
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/85 to-bg/50" />
+    </div>
+    <div class="relative mx-auto max-w-7xl px-6 pb-16 pt-28 md:px-8 md:pb-20 md:pt-36">
+      <nav aria-label="Breadcrumb" class="text-sm text-muted">
+        <a href="/" class="hover:text-accent">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/services/" class="hover:text-accent">Services</a>
+        <span class="mx-2">/</span>
+        <span class="text-text/70">Wheelchair-Accessible Transportation</span>
+      </nav>
+      <h1 class="mt-5 max-w-2xl font-display text-4xl font-semibold leading-[1.1] text-text sm:text-5xl">
+        Wheelchair-Accessible Transportation
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-text/85">{service.heroBlurb}</p>
+      <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+        <a href={business.phoneHref} class="flex items-center justify-center gap-2 rounded-sm bg-accent px-7 py-3.5 text-base font-semibold text-bg transition-colors hover:bg-accent-light">
+          Call {business.phone}
+        </a>
+        <a href="#quote" class="flex items-center justify-center rounded-sm border border-text/30 px-7 py-3.5 text-base font-semibold text-text transition-colors hover:border-accent hover:text-accent">
+          Get a Quote
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">
+        Accessible transportation, without a lower standard
+      </h2>
+      <p data-reveal style="transition-delay: 50ms" class="mt-5 leading-relaxed text-muted">
+        Accessible transportation shouldn't mean a downgrade in comfort, punctuality, or dignity. Our
+        wheelchair-accessible vehicles are ADA-compliant and maintained to the same standard as the rest of our
+        fleet, and every chauffeur is trained to assist safely and respectfully — on your terms.
+      </p>
+      <p data-reveal style="transition-delay: 100ms" class="mt-4 leading-relaxed text-muted">
+        Available for medical appointments, airport transfers, events, or everyday transportation across Dallas,
+        Fort Worth, Plano, and the DFW Metroplex.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-surface py-20 md:py-28">
+    <div class="mx-auto max-w-7xl px-6 md:px-8">
+      <div data-reveal class="max-w-2xl">
+        <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-accent">What's Included</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-text md:text-4xl">Built around comfort and safety</h2>
+      </div>
+      <div class="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          features.map((f, i) => (
+            <div data-reveal style={`transition-delay: ${i * 100}ms`} class="border-t-2 border-accent/50 pt-5">
+              <h3 class="font-display text-lg font-semibold text-text">{f.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{f.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">Accessible transportation FAQ</h2>
+      <div class="mt-10 divide-y divide-border border-t border-border">
+        {
+          faqs.map((faq, i) => (
+            <details data-reveal style={`transition-delay: ${i * 60}ms`} class="group py-5">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-medium text-text">
+                {faq.question}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 flex-shrink-0 text-accent transition-transform group-open:rotate-45" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 5a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 10 5Z" clip-rule="evenodd" />
+                </svg>
+              </summary>
+              <p class="mt-3 leading-relaxed text-muted">{faq.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand heading="Need accessible transportation?" subheading="Call to check vehicle availability, or request a quote below." />
+
+  <section id="quote" class="py-20 md:py-28">
+    <div class="mx-auto max-w-2xl px-6 md:px-8">
+      <div data-reveal class="text-center">
+        <h2 class="font-display text-3xl font-semibold text-text">Request Accessible Transportation</h2>
+        <p class="mt-3 text-muted">Share your trip details — a reservation specialist will confirm within minutes.</p>
+      </div>
+      <LeadForm defaultService="Wheelchair-Accessible Transportation" class="mt-10" />
+    </div>
+  </section>
+</Layout>

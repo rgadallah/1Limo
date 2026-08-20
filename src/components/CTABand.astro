@@ -1,0 +1,36 @@
+---
+import { business } from '../data/business';
+
+interface Props {
+  heading?: string;
+  subheading?: string;
+}
+
+const {
+  heading = 'Ready to book your ride?',
+  subheading = 'Call now or send us your trip details and a reservation specialist will confirm within minutes.',
+} = Astro.props;
+---
+
+<section class="border-y border-border bg-surface">
+  <div class="mx-auto flex max-w-7xl flex-col items-center gap-6 px-6 py-14 text-center md:px-8">
+    <div>
+      <h2 class="font-display text-2xl font-semibold text-text md:text-3xl">{heading}</h2>
+      <p class="mt-2 text-muted">{subheading}</p>
+    </div>
+    <div class="flex flex-col gap-4 sm:flex-row">
+      <a
+        href={business.phoneHref}
+        class="flex items-center justify-center gap-2 rounded-sm border border-accent px-7 py-3.5 text-base font-semibold text-accent transition-colors hover:bg-accent hover:text-bg"
+      >
+        Call {business.phone}
+      </a>
+      <a
+        href="/contact/"
+        class="flex items-center justify-center rounded-sm bg-accent px-7 py-3.5 text-base font-semibold text-bg transition-colors hover:bg-accent-light"
+      >
+        Get a Quote
+      </a>
+    </div>
+  </div>
+</section>

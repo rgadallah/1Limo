@@ -1,0 +1,113 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import CTABand from '../../components/CTABand.astro';
+import { business, serviceAreas } from '../../data/business';
+import { services } from '../../data/services';
+import { serviceSchema } from '../../lib/schema';
+import { unsplashUrl } from '../../lib/unsplash';
+
+const area = serviceAreas.find((a) => a.slug === 'plano')!;
+const relatedServices = services.filter((s) =>
+  ['corporate-transportation', 'airport-transportation', 'meetings-events'].includes(s.slug)
+);
+---
+
+<Layout title={area.metaTitle} description={area.metaDescription} path="/service-areas/plano/">
+  <Fragment slot="schema">
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(
+        serviceSchema({ name: 'Chauffeured Transportation in Plano, TX', description: area.metaDescription, path: '/service-areas/plano/' })
+      )}
+    />
+  </Fragment>
+
+  <section class="relative overflow-hidden bg-bg">
+    <div class="absolute inset-0">
+      <Image
+        src={unsplashUrl(area.imageId, 1920)}
+        width={1920}
+        height={1100}
+        alt={area.imageAlt}
+        class="h-full w-full object-cover opacity-40"
+        priority
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/85 to-bg/50" />
+    </div>
+    <div class="relative mx-auto max-w-7xl px-6 pb-16 pt-28 md:px-8 md:pb-20 md:pt-36">
+      <nav aria-label="Breadcrumb" class="text-sm text-muted">
+        <a href="/" class="hover:text-accent">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/service-areas/" class="hover:text-accent">Service Areas</a>
+        <span class="mx-2">/</span>
+        <span class="text-text/70">Plano</span>
+      </nav>
+      <h1 class="mt-5 max-w-2xl font-display text-4xl font-semibold leading-[1.1] text-text sm:text-5xl">
+        Chauffeured Transportation in Plano, TX
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-text/85">{area.heroBlurb}</p>
+      <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+        <a href={business.phoneHref} class="flex items-center justify-center gap-2 rounded-sm bg-accent px-7 py-3.5 text-base font-semibold text-bg transition-colors hover:bg-accent-light">
+          Call {business.phone}
+        </a>
+        <a href="#quote" class="flex items-center justify-center rounded-sm border border-text/30 px-7 py-3.5 text-base font-semibold text-text transition-colors hover:border-accent hover:text-accent">
+          Get a Quote
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">Local knowledge, not just an address</h2>
+      <p data-reveal style="transition-delay: 50ms" class="mt-5 leading-relaxed text-muted">{area.intro}</p>
+
+      <div data-reveal style="transition-delay: 100ms" class="mt-8 flex flex-wrap gap-3">
+        {
+          area.landmarks.map((landmark) => (
+            <span class="rounded-sm border border-border px-4 py-2 text-sm text-muted">{landmark}</span>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface py-20 md:py-28">
+    <div class="mx-auto max-w-7xl px-6 md:px-8">
+      <div data-reveal class="max-w-2xl">
+        <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-accent">Popular in Plano</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-text md:text-4xl">Services Plano clients book most</h2>
+      </div>
+      <div class="mt-12 grid gap-8 sm:grid-cols-3">
+        {
+          relatedServices.map((service, i) => (
+            <a
+              href={`/services/${service.slug}/`}
+              data-reveal
+              style={`transition-delay: ${i * 100}ms`}
+              class="group block rounded-sm border border-border bg-bg p-6 transition-colors hover:border-accent/60"
+            >
+              <h3 class="font-display text-lg font-semibold text-text group-hover:text-accent">{service.name}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{service.cardBlurb}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand heading="Riding in Plano?" subheading="Call now or request a quote for your next trip." />
+
+  <section id="quote" class="py-20 md:py-28">
+    <div class="mx-auto max-w-2xl px-6 md:px-8">
+      <div data-reveal class="text-center">
+        <h2 class="font-display text-3xl font-semibold text-text">Request a Plano Pickup</h2>
+        <p class="mt-3 text-muted">Share your trip details — a reservation specialist will confirm within minutes.</p>
+      </div>
+      <LeadForm class="mt-10" />
+    </div>
+  </section>
+</Layout>

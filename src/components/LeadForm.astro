@@ -1,0 +1,214 @@
+---
+import { services } from '../data/services';
+
+interface Props {
+  /** Pre-select a service on landing pages, e.g. "Airport Transportation". */
+  defaultService?: string;
+  class?: string;
+}
+
+const { defaultService, class: className = '' } = Astro.props;
+
+const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+const accessKey = import.meta.env.PUBLIC_FORM_ACCESS_KEY ?? '';
+---
+
+<div class={className}>
+  <form
+    id="lead-form"
+    data-endpoint={formEndpoint}
+    data-access-key={accessKey}
+    class="space-y-5"
+    novalidate
+  >
+    <!-- Honeypot: hidden from real users, bots tend to fill every field. -->
+    <div class="hidden" aria-hidden="true">
+      <label for="company">Company</label>
+      <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for="name" class="mb-1.5 block text-sm font-medium text-text">Full Name *</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          autocomplete="name"
+          class="w-full rounded-sm border border-border bg-surface px-4 py-3 text-text placeholder:text-muted focus:border-accent focus:outline-none"
+          placeholder="Jane Doe"
+        />
+      </div>
+      <div>
+        <label for="phone" class="mb-1.5 block text-sm font-medium text-text">Phone *</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          required
+          autocomplete="tel"
+          class="w-full rounded-sm border border-border bg-surface px-4 py-3 text-text placeholder:text-muted focus:border-accent focus:outline-none"
+          placeholder="(817) 555-0100"
+        />
+      </div>
+    </div>
+
+    <div>
+      <label for="email" class="mb-1.5 block text-sm font-medium text-text">Email *</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        autocomplete="email"
+        class="w-full rounded-sm border border-border bg-surface px-4 py-3 text-text placeholder:text-muted focus:border-accent focus:outline-none"
+        placeholder="jane@example.com"
+      />
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for="service" class="mb-1.5 block text-sm font-medium text-text">Service Needed</label>
+        <select
+          id="service"
+          name="service"
+          class="w-full rounded-sm border border-border bg-surface px-4 py-3 text-text focus:border-accent focus:outline-none"
+        >
+          {
+            services.map((service) => (
+              <option value={service.name} selected={service.name === defaultService}>
+                {service.name}
+              </option>
+            ))
+          }
+          <option value="Not sure yet">Not sure yet</option>
+        </select>
+      </div>
+      <div>
+        <label for="pickup-date" class="mb-1.5 block text-sm font-medium text-text">
+          Pickup Date &amp; Time
+        </label>
+        <input
+          type="datetime-local"
+          id="pickup-date"
+          name="pickup_date"
+          class="w-full rounded-sm border border-border bg-surface px-4 py-3 text-text focus:border-accent focus:outline-none"
+        />
+      </div>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for="pickup" class="mb-1.5 block text-sm font-medium text-text">Pickup Location</label>
+        <input
+          type="text"
+          id="pickup"
+          name="pickup_location"
+          class="w-full rounded-sm border border-border bg-surface px-4 py-3 text-text placeholder:text-muted focus:border-accent focus:outline-none"
+          placeholder="DFW Airport, Terminal D"
+        />
+      </div>
+      <div>
+        <label for="dropoff" class="mb-1.5 block text-sm font-medium text-text">Drop-off Location</label>
+        <input
+          type="text"
+          id="dropoff"
+          name="dropoff_location"
+          class="w-full rounded-sm border border-border bg-surface px-4 py-3 text-text placeholder:text-muted focus:border-accent focus:outline-none"
+          placeholder="Downtown Dallas"
+        />
+      </div>
+    </div>
+
+    <div>
+      <label for="message" class="mb-1.5 block text-sm font-medium text-text">Additional Details</label>
+      <textarea
+        id="message"
+        name="message"
+        rows="4"
+        class="w-full rounded-sm border border-border bg-surface px-4 py-3 text-text placeholder:text-muted focus:border-accent focus:outline-none"
+        placeholder="Number of passengers, luggage, special requests..."
+      ></textarea>
+    </div>
+
+    <button
+      type="submit"
+      class="w-full rounded-sm bg-accent px-6 py-3.5 text-base font-semibold tracking-wide text-bg transition-colors hover:bg-accent-light disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+    >
+      Request a Quote
+    </button>
+
+    <p id="form-status" role="status" class="text-sm" aria-live="polite"></p>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('lead-form') as HTMLFormElement | null;
+  const status = document.getElementById('form-status');
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!status) return;
+
+    // Honeypot tripped — silently drop, pretend success.
+    const honeypot = form.querySelector<HTMLInputElement>('#company');
+    if (honeypot?.value) {
+      form.reset();
+      status.textContent = 'Thanks — we received your request and will be in touch shortly.';
+      status.className = 'text-sm text-accent';
+      return;
+    }
+
+    const endpoint = form.dataset.endpoint;
+    if (!endpoint) {
+      status.textContent =
+        'This form is not connected to a submission endpoint yet. Set PUBLIC_FORM_ENDPOINT in your environment before launch.';
+      status.className = 'text-sm text-red-400';
+      return;
+    }
+
+    const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    submitButton?.setAttribute('disabled', 'true');
+    status.textContent = 'Sending...';
+    status.className = 'text-sm text-muted';
+
+    const formData = new FormData(form);
+    const accessKey = form.dataset.accessKey;
+    if (accessKey) {
+      formData.append('access_key', accessKey);
+    }
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+        headers: { Accept: 'application/json' },
+      });
+
+      if (!response.ok) throw new Error(`Submission failed: ${response.status}`);
+
+      form.reset();
+      status.textContent = 'Thanks — we received your request and will be in touch shortly.';
+      status.className = 'text-sm text-accent';
+
+      // Google Tag Manager / Google Ads conversion tracking.
+      // Fill in PUBLIC_GTM_ID / PUBLIC_GOOGLE_ADS_CONVERSION_ID(+LABEL) in your
+      // environment; see README.md "Analytics & conversion tracking".
+      const w = window as typeof window & { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void };
+      w.dataLayer = w.dataLayer || [];
+      w.dataLayer.push({ event: 'generate_lead', form_name: 'lead_capture' });
+
+      const conversionId = import.meta.env.PUBLIC_GOOGLE_ADS_CONVERSION_ID;
+      const conversionLabel = import.meta.env.PUBLIC_GOOGLE_ADS_CONVERSION_LABEL;
+      if (conversionId && conversionLabel && typeof w.gtag === 'function') {
+        w.gtag('event', 'conversion', { send_to: `${conversionId}/${conversionLabel}` });
+      }
+    } catch (error) {
+      status.textContent = 'Something went wrong sending your request — please call us instead.';
+      status.className = 'text-sm text-red-400';
+    } finally {
+      submitButton?.removeAttribute('disabled');
+    }
+  });
+</script>

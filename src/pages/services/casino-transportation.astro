@@ -1,0 +1,165 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import CTABand from '../../components/CTABand.astro';
+import { business } from '../../data/business';
+import { getService } from '../../data/services';
+import { serviceSchema, faqSchema } from '../../lib/schema';
+import { unsplashUrl } from '../../lib/unsplash';
+
+const service = getService('casino-transportation')!;
+
+const features = [
+  {
+    title: 'No one has to be the designated driver',
+    body: "Ride there and back in the same comfortable vehicle — nobody in your group has to stay sober behind the wheel.",
+  },
+  {
+    title: 'Door-to-door, both ways',
+    body: 'Pickup at your door, drop-off at the casino entrance, and the same in reverse whenever you\'re ready to head home.',
+  },
+  {
+    title: 'Room for the group',
+    body: 'Traveling with friends? An SUV or sprinter van keeps everyone together instead of splitting into separate cars.',
+  },
+  {
+    title: 'Flexible return timing',
+    body: "No fixed pickup window — call or text when you're ready and your chauffeur heads back.",
+  },
+];
+
+const faqs = [
+  {
+    question: 'Which casinos do you serve?',
+    answer:
+      'We provide transportation to Oklahoma casinos and North Texas gaming destinations from anywhere in the DFW Metroplex — call to confirm coverage for your specific destination.',
+  },
+  {
+    question: 'Do I need to schedule a fixed return time?',
+    answer:
+      "No — for most casino trips, simply call or text our dispatch line when you're ready to leave and we'll send your chauffeur back.",
+  },
+  {
+    question: 'Can you accommodate a group trip with friends?',
+    answer:
+      'Yes, we have SUVs and sprinter vans available so your whole group can travel together instead of splitting across multiple cars.',
+  },
+];
+---
+
+<Layout title={service.metaTitle} description={service.metaDescription} path="/services/casino-transportation/">
+  <Fragment slot="schema">
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(
+        serviceSchema({ name: 'Casino Transportation', description: service.metaDescription, path: '/services/casino-transportation/' })
+      )}
+    />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema(faqs))} />
+  </Fragment>
+
+  <section class="relative overflow-hidden bg-bg">
+    <div class="absolute inset-0">
+      <Image
+        src={unsplashUrl('1503376780353-7e6692767b70', 1920)}
+        width={1920}
+        height={1100}
+        alt="Black luxury sedan driving on a highway at dusk"
+        class="h-full w-full object-cover opacity-40"
+        priority
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/85 to-bg/50" />
+    </div>
+    <div class="relative mx-auto max-w-7xl px-6 pb-16 pt-28 md:px-8 md:pb-20 md:pt-36">
+      <nav aria-label="Breadcrumb" class="text-sm text-muted">
+        <a href="/" class="hover:text-accent">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/services/" class="hover:text-accent">Services</a>
+        <span class="mx-2">/</span>
+        <span class="text-text/70">Casino Transportation</span>
+      </nav>
+      <h1 class="mt-5 max-w-2xl font-display text-4xl font-semibold leading-[1.1] text-text sm:text-5xl">
+        Casino Transportation from DFW
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-text/85">{service.heroBlurb}</p>
+      <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+        <a href={business.phoneHref} class="flex items-center justify-center gap-2 rounded-sm bg-accent px-7 py-3.5 text-base font-semibold text-bg transition-colors hover:bg-accent-light">
+          Call {business.phone}
+        </a>
+        <a href="#quote" class="flex items-center justify-center rounded-sm border border-text/30 px-7 py-3.5 text-base font-semibold text-text transition-colors hover:border-accent hover:text-accent">
+          Get a Quote
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">
+        Relax on the way there — and the way back
+      </h2>
+      <p data-reveal style="transition-delay: 50ms" class="mt-5 leading-relaxed text-muted">
+        A casino trip should start the moment you leave the house, not once you walk through the doors. We handle the
+        driving both ways, so your group can relax, and nobody has to think about the drive home at the end of the
+        night.
+      </p>
+      <p data-reveal style="transition-delay: 100ms" class="mt-4 leading-relaxed text-muted">
+        Pickup anywhere in Dallas, Fort Worth, Plano, or the surrounding Metroplex.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-surface py-20 md:py-28">
+    <div class="mx-auto max-w-7xl px-6 md:px-8">
+      <div data-reveal class="max-w-2xl">
+        <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-accent">What's Included</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-text md:text-4xl">Built for a stress-free night out</h2>
+      </div>
+      <div class="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          features.map((f, i) => (
+            <div data-reveal style={`transition-delay: ${i * 100}ms`} class="border-t-2 border-accent/50 pt-5">
+              <h3 class="font-display text-lg font-semibold text-text">{f.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{f.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">Casino transportation FAQ</h2>
+      <div class="mt-10 divide-y divide-border border-t border-border">
+        {
+          faqs.map((faq, i) => (
+            <details data-reveal style={`transition-delay: ${i * 60}ms`} class="group py-5">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-medium text-text">
+                {faq.question}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 flex-shrink-0 text-accent transition-transform group-open:rotate-45" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 5a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 10 5Z" clip-rule="evenodd" />
+                </svg>
+              </summary>
+              <p class="mt-3 leading-relaxed text-muted">{faq.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand heading="Ready for a night out?" subheading="Reserve your ride there and back, or call our 24/7 line for a same-day pickup." />
+
+  <section id="quote" class="py-20 md:py-28">
+    <div class="mx-auto max-w-2xl px-6 md:px-8">
+      <div data-reveal class="text-center">
+        <h2 class="font-display text-3xl font-semibold text-text">Request Casino Transportation</h2>
+        <p class="mt-3 text-muted">Share your trip details — a reservation specialist will confirm within minutes.</p>
+      </div>
+      <LeadForm defaultService="Casino Transportation" class="mt-10" />
+    </div>
+  </section>
+</Layout>

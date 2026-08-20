@@ -1,0 +1,167 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import CTABand from '../../components/CTABand.astro';
+import { business } from '../../data/business';
+import { getService } from '../../data/services';
+import { serviceSchema, faqSchema } from '../../lib/schema';
+import { unsplashUrl } from '../../lib/unsplash';
+
+const service = getService('meetings-events')!;
+
+const features = [
+  {
+    title: 'One dispatcher for every vehicle',
+    body: 'Multiple cars, one point of contact — no juggling separate confirmations for each vehicle in your group.',
+  },
+  {
+    title: 'Timed to the agenda, not just the address',
+    body: "Airport arrivals staggered to the conference schedule, and return trips timed to when the event actually ends — not when it was supposed to.",
+  },
+  {
+    title: 'Scales with your headcount',
+    body: 'From a handful of executives to a full conference delegation, using sedans, SUVs, and sprinter vans as needed.',
+  },
+  {
+    title: 'A single point of contact on-site',
+    body: 'One coordinator who knows your full itinerary, reachable throughout the event for last-minute changes.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'Can you coordinate transportation for a full conference or delegation?',
+    answer:
+      'Yes — send us your attendee count, flight windows, and event schedule, and we assign the right mix of vehicles with one dispatcher managing all of it.',
+  },
+  {
+    question: 'Do you provide shuttle service between a hotel and venue?',
+    answer:
+      'Yes, we run scheduled shuttle routes for multi-day events — tell us the schedule and headcount and we\'ll put together a plan.',
+  },
+  {
+    question: 'What if our event schedule changes day-of?',
+    answer:
+      "That's normal for conferences — your on-site coordinator stays reachable and adjusts pickups in real time as the agenda shifts.",
+  },
+];
+---
+
+<Layout title={service.metaTitle} description={service.metaDescription} path="/services/meetings-events/">
+  <Fragment slot="schema">
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(
+        serviceSchema({ name: 'Meetings & Events', description: service.metaDescription, path: '/services/meetings-events/' })
+      )}
+    />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema(faqs))} />
+  </Fragment>
+
+  <section class="relative overflow-hidden bg-bg">
+    <div class="absolute inset-0">
+      <Image
+        src={unsplashUrl('1603087462214-2aadc739429c', 1920)}
+        width={1920}
+        height={1100}
+        alt="Businessman in a suit with a pocket square leaning against a black car"
+        class="h-full w-full object-cover opacity-40"
+        priority
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/85 to-bg/50" />
+    </div>
+    <div class="relative mx-auto max-w-7xl px-6 pb-16 pt-28 md:px-8 md:pb-20 md:pt-36">
+      <nav aria-label="Breadcrumb" class="text-sm text-muted">
+        <a href="/" class="hover:text-accent">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/services/" class="hover:text-accent">Services</a>
+        <span class="mx-2">/</span>
+        <span class="text-text/70">Meetings &amp; Events</span>
+      </nav>
+      <h1 class="mt-5 max-w-2xl font-display text-4xl font-semibold leading-[1.1] text-text sm:text-5xl">
+        Meeting &amp; Event Group Transportation
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-text/85">{service.heroBlurb}</p>
+      <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+        <a href={business.phoneHref} class="flex items-center justify-center gap-2 rounded-sm bg-accent px-7 py-3.5 text-base font-semibold text-bg transition-colors hover:bg-accent-light">
+          Call {business.phone}
+        </a>
+        <a href="#quote" class="flex items-center justify-center rounded-sm border border-text/30 px-7 py-3.5 text-base font-semibold text-text transition-colors hover:border-accent hover:text-accent">
+          Get a Quote
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">
+        Group logistics without the group-logistics headache
+      </h2>
+      <p data-reveal style="transition-delay: 50ms" class="mt-5 leading-relaxed text-muted">
+        Conferences, corporate retreats, and multi-day events involve more moving pieces than any single trip — flight
+        arrivals spread across a day, hotel-to-venue shuttles, and a return schedule that depends on when the event
+        actually wraps. We coordinate all of it from one dispatch point, with the right mix of sedans, SUVs, and
+        sprinter vans for your group.
+      </p>
+      <p data-reveal style="transition-delay: 100ms" class="mt-4 leading-relaxed text-muted">
+        We support events across the DFW Metroplex, including venues in Dallas, Fort Worth, and the Plano/Frisco
+        corporate corridor.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-surface py-20 md:py-28">
+    <div class="mx-auto max-w-7xl px-6 md:px-8">
+      <div data-reveal class="max-w-2xl">
+        <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-accent">What's Included</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-text md:text-4xl">Built for group coordination</h2>
+      </div>
+      <div class="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          features.map((f, i) => (
+            <div data-reveal style={`transition-delay: ${i * 100}ms`} class="border-t-2 border-accent/50 pt-5">
+              <h3 class="font-display text-lg font-semibold text-text">{f.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{f.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-6 md:px-8">
+      <h2 data-reveal class="font-display text-3xl font-semibold text-text">Meetings &amp; events FAQ</h2>
+      <div class="mt-10 divide-y divide-border border-t border-border">
+        {
+          faqs.map((faq, i) => (
+            <details data-reveal style={`transition-delay: ${i * 60}ms`} class="group py-5">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-medium text-text">
+                {faq.question}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 flex-shrink-0 text-accent transition-transform group-open:rotate-45" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 5a.75.75 0 0 1 .75.75v3.5h3.5a.75.75 0 0 1 0 1.5h-3.5v3.5a.75.75 0 0 1-1.5 0v-3.5h-3.5a.75.75 0 0 1 0-1.5h3.5v-3.5A.75.75 0 0 1 10 5Z" clip-rule="evenodd" />
+                </svg>
+              </summary>
+              <p class="mt-3 leading-relaxed text-muted">{faq.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand heading="Planning a conference or corporate event?" subheading="Tell us your headcount and schedule — we'll put together a transportation plan." />
+
+  <section id="quote" class="py-20 md:py-28">
+    <div class="mx-auto max-w-2xl px-6 md:px-8">
+      <div data-reveal class="text-center">
+        <h2 class="font-display text-3xl font-semibold text-text">Request Group Transportation</h2>
+        <p class="mt-3 text-muted">Share your event details — a reservation specialist will confirm within minutes.</p>
+      </div>
+      <LeadForm defaultService="Meetings & Events" class="mt-10" />
+    </div>
+  </section>
+</Layout>
