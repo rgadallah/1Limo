@@ -7,6 +7,8 @@ export type Vehicle = {
   description: string;
   imageId: string;
   imageAlt: string;
+  /** Overrides the default entropy crop — see unsplashUrl() in src/lib/unsplash.ts. */
+  focal?: { x: number; y: number };
 };
 
 // Placeholder fleet copy/photos — replace imageId with real fleet photography
@@ -23,6 +25,10 @@ export const fleet: Vehicle[] = [
       'A polished, understated sedan for the trips where discretion matters most — a solo airport run or a one-on-one client pickup.',
     imageId: '1485291571150-772bcfc10da5',
     imageAlt: 'Black executive sedan silhouette',
+    // Default entropy crop left only a 16px margin in front of the car at
+    // 1000x750; this focal point (measured from the uncropped source, where
+    // the car spans x=9.7%-87.3%) gives balanced ~34px margins both sides.
+    focal: { x: 0.485, y: 0.5 },
   },
   {
     slug: 'luxury-suv',
